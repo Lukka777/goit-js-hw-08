@@ -74,26 +74,32 @@ buttonClose.addEventListener("click", (event) => {
 });
 
 galleryItems.forEach((element) => {
-  const liElement = document.createElement("li");
-  liElement.classList.add("gallery__item");
+  const liElement = createElementWithClass("li", "gallery__item");
 
-  const aElement = document.createElement("a");
+  const aElement = createElementWithClass("a", "gallery__link");
+  addAttribute(aElement, "href", element.original);
+
   aElement.addEventListener("click", (event) => {
     event.preventDefault();
     divLightbox.classList.add("is-open");
-    lightBoxImage.src = element.original;
+    addAttribute(lightBoxImage, "src", element.original);
   });
 
-  aElement.classList.add("gallery__link");
-  aElement.href = element.original;
-
-  const imgElement = document.createElement("img");
-  imgElement.classList.add("gallery__image");
-  imgElement.src = element.preview;
+  const imgElement = createElementWithClass("img", "gallery__image");
+  addAttribute(imgElement, "src", element.preview);
+  addAttribute(imgElement, "alt", element.description);
   imgElement.dataset.source = element.original;
-  imgElement.alt = element.description;
-
+  
   aElement.appendChild(imgElement);
   liElement.appendChild(aElement);
   jsGallery.appendChild(liElement);
 });
+function createElementWithClass(tagName, className) {
+  const elem = document.createElement(tagName);
+  elem.classList.add(className);
+  return elem;
+}
+
+function addAttribute(elem, attrName, attrValue) {
+  elem[attrName] = attrValue;
+}
